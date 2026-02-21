@@ -4,9 +4,13 @@
 
 ### 1. WebSearch（最優先）
 最新情報の取得に最も有効。以下のクエリパターンを使う:
+- `"Karin." ユニバーサルミュージック [検索キーワード]`
 - `"Karin." シンガーソングライター [検索キーワード]`
-- `karin-official.com [検索キーワード]`
-- `Karin. ユニバーサルミュージック [検索キーワード]`
+- `site:natalie.mu "Karin."`
+- `site:universal-music.co.jp karin`
+- `site:karin-official.com [検索キーワード]`
+
+**混同注意**: 「Karin.」は一般的な名前のため、KARA（K-pop）等の別アーティストが検索結果に混入しやすい。結果のURLドメインやコンテキストで必ずフィルタリングすること。
 
 ### 2. Universal Music Japan（WebFetch可能）
 - URL: `https://www.universal-music.co.jp/karin/`
@@ -18,10 +22,14 @@
 - 内容: ニュース記事一覧
 - 特徴: 日本の音楽メディア。ライブ・リリース・MV公開などの速報性が高い
 
-### 4. 公式サイト（WebFetch不可）
+### 4. 公式サイト（ページ本文はWebFetch不可、sitemapは可能）
 - URL: `https://www.karin-official.com/`
-- 注意: Wix製サイト。JavaScriptで動的レンダリングのためWebFetchでは内容を取得できない
-- 対応: WebSearchで `site:karin-official.com` を使い間接的に情報を取得する
+- 注意: Wix製サイト。JavaScriptで動的レンダリングのため通常ページのWebFetchでは内容を取得できない
+- **sitemapは読み取り可能**。以下のsitemapからイベントURL・日付を抽出できる:
+  - `https://www.karin-official.com/sitemap.xml` （サイトマップインデックス）
+  - `https://www.karin-official.com/event-pages-sitemap.xml` （ライブイベント一覧）
+  - `https://www.karin-official.com/pages-sitemap.xml` （全ページ一覧、日付ページ含む）
+- URLに日付・会場名が含まれるため、sitemapだけでもライブスケジュールの概要が把握できる
 
 ### 5. SNS
 - X (Twitter): `@_Karin_official`
