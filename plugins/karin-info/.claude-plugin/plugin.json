@@ -4,5 +4,7 @@
   "version": "1.0.0",
   "author": {
     "name": "sorafujitani"
-  }
+  },
+  "repository": "https://github.com/sorafujitani/skills",
+  "license": "MIT"
 }

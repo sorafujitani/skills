@@ -1,17 +1,21 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "sorafujitani-skills",
+  "version": "1.0.0",
+  "description": "A collection of custom skills for Claude Code",
   "owner": {
     "name": "sorafujitani"
-  },
-  "metadata": {
-    "description": "A collection of custom skills for Claude Code"
   },
   "plugins": [
     {
       "name": "karin-info",
-      "source": "./plugins/karin-info",
       "description": "Fetches and organizes the latest information about singer-songwriter Karin. via web search",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "author": {
+        "name": "sorafujitani"
+      },
+      "source": "./plugins/karin-info",
+      "category": "productivity"
     }
   ]
 }
