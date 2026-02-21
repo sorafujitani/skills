@@ -1,22 +1,37 @@
 # Skills
 
-A collection of custom skills for Claude Code.
+A collection of custom skills for Claude Code, distributed as a plugin marketplace.
 
 ## Installation
 
-Install from the Claude Code Skills Marketplace:
+### From the marketplace
+
+Add this repository as a plugin marketplace in Claude Code:
 
 ```
-claude install-skill sorafujitani/skills/<skill-name>
+/plugin marketplace add sorafujitani/skills
 ```
 
-Or search for `sorafujitani/skills` using the `/install-skill` command in Claude Code.
+Then install individual plugins:
 
-## Available Skills
+```
+/plugin install karin-info@sorafujitani-skills
+```
 
-| Skill | Description |
-|-------|-------------|
-| [karin-info](./karin-info/SKILL.md) | Fetches and organizes the latest information about singer-songwriter Karin. Collects news, release info, live events, and more from the web and presents them in a structured format. |
+### Manual installation
+
+Alternatively, copy a skill directory directly into your Claude Code skills folder:
+
+```bash
+git clone https://github.com/sorafujitani/skills.git
+cp -r skills/plugins/karin-info/skills/karin-info ~/.claude/skills/
+```
+
+## Available Plugins
+
+| Plugin | Description |
+|--------|-------------|
+| [karin-info](./plugins/karin-info/skills/karin-info/SKILL.md) | Fetches and organizes the latest information about singer-songwriter Karin. via web search |
 
 ### karin-info
 
@@ -34,4 +49,4 @@ Tell me the latest news about Karin.
 Look up Karin.'s upcoming live events
 ```
 
-See [karin-info/SKILL.md](./karin-info/SKILL.md) for details.
+See [SKILL.md](./plugins/karin-info/skills/karin-info/SKILL.md) for details.

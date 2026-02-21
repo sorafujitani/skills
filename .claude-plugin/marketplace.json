@@ -1,0 +1,17 @@
+{
+  "name": "sorafujitani-skills",
+  "owner": {
+    "name": "sorafujitani"
+  },
+  "metadata": {
+    "description": "A collection of custom skills for Claude Code"
+  },
+  "plugins": [
+    {
+      "name": "karin-info",
+      "source": "./plugins/karin-info",
+      "description": "Fetches and organizes the latest information about singer-songwriter Karin. via web search",
+      "version": "1.0.0"
+    }
+  ]
+}

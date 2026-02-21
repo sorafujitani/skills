@@ -1,0 +1,8 @@
+{
+  "name": "karin-info",
+  "description": "Fetches and organizes the latest information about singer-songwriter Karin. via web search",
+  "version": "1.0.0",
+  "author": {
+    "name": "sorafujitani"
+  }
+}
