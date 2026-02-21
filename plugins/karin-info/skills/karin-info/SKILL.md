@@ -5,81 +5,91 @@ description: "シンガーソングライターKarin.の最新情報を取得・
 
 # Karin. 最新情報エージェント
 
-シンガーソングライターKarin.（かりん、2001年生まれ、ユニバーサルシグマ所属）に関する最新情報をWebから収集し、構造化して提示する。
+## アーティスト識別情報
 
-**重要: 同名・類似名アーティストとの混同に注意**
-- KARA（K-popグループ）は別アーティスト
-- 花凛、華凛、かりん等の同音異名も別人
-- 検索結果にこれらが含まれる場合は必ず除外すること
+- 名前: Karin.（ピリオド付き、読み: かりん）
+- 職業: シンガーソングライター
+- 生年月日: 2001年5月30日
+- 所属レーベル: ユニバーサルシグマ（UNIVERSAL MUSIC JAPAN）
+- 公式サイト: https://www.karin-official.com/
+- X: @_Karin_official
 
-## 情報収集ワークフロー
+> **混同禁止**: 以下は全て別人。検索結果に含まれたら必ず除外すること。
+> - KARA（K-popグループ）
+> - 花凛、華凛、かりん（同音異名の別人）
+> - アニメ・ゲームキャラクター
 
-### Step 1: WebSearchで最新情報を検索
+## ワークフロー
 
-以下のクエリで最新情報を幅広く収集する。`[年]` には現在の年を入れる:
+以下の Step 1〜3 を**並列実行**し、Step 4 で統合する。
+
+### Step 1: WebSearch
+
+`[YEAR]` は現在の年に置換する。クエリは目的に応じて選択:
+
+| 目的 | クエリ |
+|------|--------|
+| 総合ニュース | `"Karin." ユニバーサルミュージック [YEAR]` |
+| リリース | `"Karin." シンガーソングライター 新曲 [YEAR]` |
+| ライブ | `"Karin." シンガーソングライター ライブ [YEAR]` |
+| ナタリー記事 | `site:natalie.mu "Karin."` |
+| レーベル | `site:universal-music.co.jp karin` |
+
+**結果の判別ルール:**
+- ACCEPT: ドメインが `karin-official.com`, `universal-music.co.jp`, `natalie.mu` のもの
+- ACCEPT: 文脈が「シンガーソングライター」「ユニバーサルミュージック」に合致するもの
+- REJECT: K-pop、韓国、アニメ関連の結果
+
+### Step 2: 公式サイト sitemap（WebFetch）
+
+公式サイトはWix製。通常ページはJSレンダリングのためWebFetchで読めないが、**sitemapは読める**。
+
+以下の2つを WebFetch で取得:
 
 ```
-"Karin." ユニバーサルミュージック [年]
-"Karin." シンガーソングライター 新曲 [年]
-"Karin." シンガーソングライター ライブ [年]
-site:natalie.mu "Karin."
-site:universal-music.co.jp karin
+https://www.karin-official.com/event-pages-sitemap.xml
+https://www.karin-official.com/pages-sitemap.xml
 ```
 
-検索結果の判別ポイント:
-- **正しい結果**: ユニバーサルミュージック、karin-official.com、音楽ナタリーのKarin.ページ
-- **除外すべき結果**: K-pop関連、韓国アーティスト、アニメキャラクター
+**URLからの情報抽出ルール:**
 
-結果のURLを次のステップで使う。
+| URLパターン | 含まれる情報 | 例 |
+|-------------|-------------|-----|
+| `/event-details/YYYY-MM-DD-venue` | ライブ日程 + 会場名 | `/event-details/2025-10-25-shimokitazawalaguna` |
+| `/YYYY-MM-DD` | ニュースまたはライブ告知の日付 | `/2026-02-28` |
+| `/ツアー`, `/ワンマン` 等 | ツアー・ワンマン情報ページ | `/2025-ワンマン` |
 
-### Step 2: 公式サイトのsitemapからイベント情報を取得
+`lastmod` フィールドで更新日も確認できる。
 
-公式サイト `karin-official.com` はWix製で動的レンダリングのため通常ページのWebFetchでは読み取れない。
-ただし **sitemapはWebFetchで読み取れる** ため、以下の手順でイベント情報を取得する:
+### Step 3: 外部メディア（WebFetch）
 
-1. `https://www.karin-official.com/event-pages-sitemap.xml` をWebFetchで取得
-   - ライブイベントのURLと最終更新日が取得できる
-   - URLに日付・会場名が含まれる（例: `2025-10-25-shimokitazawalaguna`）
-2. `https://www.karin-official.com/pages-sitemap.xml` をWebFetchで取得
-   - ニュース・ライブ個別ページのURL一覧が取得できる
-   - 日付ページ（例: `2026-02-28`）から直近のイベント日程を把握できる
-
-**URLからの情報抽出パターン:**
-- `/event-details/YYYY-MM-DD-会場名` → ライブ日程・会場
-- `/YYYY-MM-DD` → ニュースまたはライブ告知の日付
-
-### Step 3: WebFetchで詳細情報を補完
-
-以下の信頼できるソースをWebFetchで読み取り、sitemapで得た情報を補完する:
-
-| ソース | URL | 取得可能な情報 |
-|--------|-----|----------------|
+| ソース | URL | 内容 |
+|--------|-----|------|
 | Universal Music Japan | `https://www.universal-music.co.jp/karin/` | ニュース、ディスコグラフィー |
 | 音楽ナタリー | `https://natalie.mu/music/artist/112029` | ニュース記事一覧 |
 
-### Step 4: 情報を構造化して出力
+### Step 4: 出力
 
-収集した情報を以下の形式で整理して提示する:
+収集した情報を以下のフォーマットで統合して出力する。
+情報が見つからないセクションは省略する。
 
 ```markdown
-## Karin. 最新情報 ([取得日])
+## Karin. 最新情報（[YYYY-MM-DD]取得）
 
 ### ニュース
-- [日付] タイトル（ソース名）
+- [YYYY-MM-DD] タイトル（ソース名）
 
 ### リリース情報
-- [リリース日] タイトル / 種別（シングル/アルバム/EP）
+- [YYYY-MM-DD] タイトル / 種別（シングル/アルバム/EP）
 
 ### ライブ・イベント
-- [日程] イベント名 / 会場
+- [YYYY-MM-DD] イベント名 / 会場
 
 ### 関連リンク
 - 公式サイト: https://www.karin-official.com/
-- X (Twitter): @_Karin_official
+- X: https://x.com/_Karin_official
 - Universal Music: https://www.universal-music.co.jp/karin/
 ```
-
-情報が見つからないセクションは省略する。
 
 ## リファレンス
 
