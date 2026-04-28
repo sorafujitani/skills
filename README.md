@@ -1,52 +1,127 @@
-# Skills
+# Agent Skills
 
-A collection of custom skills for Claude Code, distributed as a plugin marketplace.
+A collection of agent skills I use day-to-day across Claude Code, Codex, Cursor, and other agents that follow the [open agent skills](https://github.com/vercel-labs/skills) convention.
 
-## Installation
+## Install
 
-### From the marketplace
-
-Add this repository as a plugin marketplace in Claude Code:
-
-```
-/plugin marketplace add sorafujitani/skills
-```
-
-Then install individual plugins:
-
-```
-/plugin install karin-info@sorafujitani-skills
-```
-
-### Manual installation
-
-Alternatively, copy a skill directory directly into your Claude Code skills folder:
+Use [`skills`](https://github.com/vercel-labs/skills) to install any single skill, or browse them all interactively:
 
 ```bash
-git clone https://github.com/sorafujitani/skills.git
-cp -r skills/plugins/karin-info/skills/karin-info ~/.claude/skills/
+# install one skill (replace <skill> with any name from the catalog below)
+npx skills add sorafujitani/skills/<skill>
+
+# pick from a list
+npx skills add sorafujitani/skills
+
+# install everything for Claude Code only
+npx skills add sorafujitani/skills --skill '*' -a claude-code -g -y
 ```
 
-## Available Plugins
+Each skill ends up at `~/.claude/skills/<skill>/SKILL.md` (or the equivalent directory for other agents).
 
-| Plugin | Description |
-|--------|-------------|
-| [karin-info](./plugins/karin-info/skills/karin-info/SKILL.md) | Fetches and organizes the latest information about singer-songwriter Karin. via web search |
+## Catalog
 
-### karin-info
+### Coding modes
 
-Collects the latest information about Karin. via WebSearch / WebFetch and organizes it into:
+Hands-on modes that hold the keyboard for you instead of writing code on your behalf.
 
-- News
-- Releases (singles / albums / EPs)
-- Live events & concerts
-- Related links
+- **code-mode-guide-coding** — Guided coding mode. The agent never writes code; it tells you what to write and where, phase by phase, until the task is done.
 
-Example usage:
+  ```bash
+  npx skills add sorafujitani/skills/code-mode-guide-coding
+  ```
 
+- **code-mode-print-debug** — Print-debug walkthrough. One step, one observation. Place a `println` / `console.log`, run, read, then decide the next probe — both to chase a bug and to learn an unfamiliar codebase.
+
+  ```bash
+  npx skills add sorafujitani/skills/code-mode-print-debug
+  ```
+
+### Planning & design
+
+Read-only modes for thinking through a change before any code moves.
+
+- **plan-dry-coding** — Plan-mode wrapper for PR- to epic-sized design. Parallel Explore/Plan sub-agents, schema contracts, and a design doc plus reviewable dry-coded implementation under `.claude/plans/`. No file edits.
+
+  ```bash
+  npx skills add sorafujitani/skills/plan-dry-coding
+  ```
+
+- **plan-issue-analyzer** — Four-phase analysis of an OSS issue or feature request: independent parallel investigation, hypothesis/refutation cycles, evidence scoring, then a TDD-shaped implementation plan with cited sources.
+
+  ```bash
+  npx skills add sorafujitani/skills/plan-issue-analyzer
+  ```
+
+### Pull requests
+
+- **pr-cmt-plan** — Pull the unresolved review comments on the current branch's PR, classify them (Critical / Important / Minor), and produce an ordered remediation plan.
+
+  ```bash
+  npx skills add sorafujitani/skills/pr-cmt-plan
+  ```
+
+- **pr-gen** — Generate a PR from the current git state in a standard format (no Linear integration).
+
+  ```bash
+  npx skills add sorafujitani/skills/pr-gen
+  ```
+
+### Code review
+
+- **review-code** — Multi-agent code review. Four sub-agents review in parallel, each finding is checked for code existence and backed by official docs (WebSearch) to keep hallucinations out, then explained with prerequisite knowledge for the reader.
+
+  ```bash
+  npx skills add sorafujitani/skills/review-code
+  ```
+
+### Testing
+
+- **test-exploratory** — Detect the project's interface (CLI / API / Web API / GUI) and run an exploratory test pass end-to-end: plan → implement → execute → report.
+
+  ```bash
+  npx skills add sorafujitani/skills/test-exploratory
+  ```
+
+- **test-pbt** — Property-based testing assistant. Static analysis of the target picks property patterns, composes generators, generates the test code, runs it, and reports — across whatever PBT framework is in the project.
+
+  ```bash
+  npx skills add sorafujitani/skills/test-pbt
+  ```
+
+### Utilities
+
+- **karin-info** — Pulls the latest news, releases, live dates and links about singer-songwriter Karin. via WebSearch / WebFetch.
+
+  ```bash
+  npx skills add sorafujitani/skills/karin-info
+  ```
+
+- **local-repo-finder** — Resolve another repository's path on the local machine, regardless of how the developer organises their workspace, using `fd`.
+
+  ```bash
+  npx skills add sorafujitani/skills/local-repo-finder
+  ```
+
+## Local development
+
+If you are editing skills in this repo, `npx skills add` would copy them, so edits would not reach your agent until the next install. Use the symlink helper instead:
+
+```bash
+# create or refresh ~/.claude/skills/<skill> -> <repo>/<skill> for every skill here
+./scripts/link-local.sh
+
+# preview without changing anything
+./scripts/link-local.sh --dry-run
+
+# tear the symlinks down
+./scripts/link-local.sh --unlink
 ```
-Tell me the latest news about Karin.
-Look up Karin.'s upcoming live events
-```
 
-See [SKILL.md](./plugins/karin-info/skills/karin-info/SKILL.md) for details.
+After running once, every save under a skill directory shows up in your next Claude Code session immediately.
+
+To add a new skill: create `<skill-name>/SKILL.md` at the repo root with YAML frontmatter (`name`, `description`), run `./scripts/link-local.sh`, then commit.
+
+## License
+
+MIT — see [LICENSE](./LICENSE) (per-skill exceptions noted in the skill's own `SKILL.md` if any).
