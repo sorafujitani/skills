@@ -105,24 +105,27 @@ Read-only modes for thinking through a change before any code moves.
 
 ## Local development
 
-If you are editing skills in this repo, `npx skills add` would copy them, so edits would not reach your agent until the next install. Use the symlink helper instead:
+This repository lives directly at `~/.claude/skills/` on my own machine, which is the path Claude Code already loads user skills from. Editing a skill's `SKILL.md` here means the change is picked up by the next Claude Code session — no symlinks, no `npx skills add` round-trip.
 
-```bash
-# create or refresh ~/.claude/skills/<skill> -> <repo>/<skill> for every skill here
-./scripts/link-local.sh
+### Adding a new public skill
 
-# preview without changing anything
-./scripts/link-local.sh --dry-run
-
-# tear the symlinks down
-./scripts/link-local.sh --unlink
-```
-
-After running once, every save under a skill directory shows up in your next Claude Code session immediately.
-
-To add a new skill: create `<skill-name>/SKILL.md` at the repo root with YAML frontmatter (`name`, `description`), run `./scripts/link-local.sh`, then commit.
+1. Create `<skill-name>/SKILL.md` at the repo root with YAML frontmatter (`name`, `description`).
+2. `git add <skill-name>/ && git commit && git push`.
 
 Skill names follow the [Anthropic Agent Skills naming conventions](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices#naming-conventions): lowercase letters, numbers, and hyphens only; gerund or short noun-phrase form; no vague labels (`helper`, `utils`, …) or reserved words (`anthropic`, `claude`).
+
+### Keeping private skills out
+
+Private skills stay in the same `~/.claude/skills/` directory but are listed in `.gitignore` and remain untracked. Add a directory name to `.gitignore` before its first `git add` to keep it local-only.
+
+### Bootstrapping on a new machine
+
+```bash
+# Move any pre-existing private skills out of the way first if you have them.
+git clone git@github.com:sorafujitani/skills.git ~/.claude/skills
+# Drop your private skills back into ~/.claude/skills/. They remain untracked
+# as long as their directory name is listed in .gitignore.
+```
 
 ## License
 
