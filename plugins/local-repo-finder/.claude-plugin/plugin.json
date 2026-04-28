@@ -1,0 +1,9 @@
+{
+  "name": "local-repo-finder",
+  "description": "Detect local Git repository paths across different developer environments using fd",
+  "author": {
+    "name": "sorafujitani"
+  },
+  "repository": "https://github.com/sorafujitani/skills",
+  "license": "Apache-2.0"
+}

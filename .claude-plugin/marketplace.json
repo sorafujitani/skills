@@ -16,6 +16,16 @@
       },
       "source": "./plugins/karin-info",
       "category": "productivity"
+    },
+    {
+      "name": "local-repo-finder",
+      "description": "Detect local Git repository paths across different developer environments using fd",
+      "version": "1.0.0",
+      "author": {
+        "name": "sorafujitani"
+      },
+      "source": "./plugins/local-repo-finder",
+      "category": "productivity"
     }
   ]
 }
