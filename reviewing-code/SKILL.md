@@ -1,5 +1,5 @@
 ---
-name: review-code
+name: reviewing-code
 description: |
   PRベースの多角的コードレビューを実行する。
   4つの独立subagentが並列にレビューし、指摘箇所のコード実在確認・

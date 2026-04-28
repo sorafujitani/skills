@@ -1,5 +1,5 @@
 ---
-name: pr-gen
+name: generating-prs
 description: |
   現在のgit状態を分析し、標準フォーマットに準拠したPRを自動生成する。
   Linear統合なしのシンプルなPR作成コマンド。

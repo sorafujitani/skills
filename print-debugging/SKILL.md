@@ -1,5 +1,5 @@
 ---
-name: code-mode-print-debug
+name: print-debugging
 description: |
   プリントデバッグによるハンズオン問題分析モード。
   1ステップ1確認の積み重ねで、ユーザーが自分の手でprintln/console.logを仕込み、

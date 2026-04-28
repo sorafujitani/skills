@@ -1,5 +1,5 @@
 ---
-name: test-exploratory
+name: exploratory-testing
 description: |
   探索的テストの自動実施。プロジェクトのインターフェース（CLI/API/Web API/GUI）を
   自動判定し、テスト計画作成・テスト実装・実行・レポート生成までを包括的に実施する。

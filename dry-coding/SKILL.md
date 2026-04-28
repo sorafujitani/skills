@@ -1,5 +1,5 @@
 ---
-name: plan-dry-coding
+name: dry-coding
 description: "PR〜エピック単位のシステム設計 + dry-coding。要件→多角的評価→設計ドキュメント(.claude/plans/)。plan mode wrapper。Explore/Plan subagent並列 + Schema Contract。コード変更は行わず、設計ドキュメントとレビュー可能な実装コードを出力。(1)新機能設計 (2)リファクタ設計 (3)PR前設計レビュー (4)アーキ判断文書化 (5)アプローチ比較 (6)エピック段階計画 (7)実装コードのdry提示"
 allowed-tools: Bash, Read, Glob, Grep, Task, WebSearch, WebFetch, AskUserQuestion
 argument-hint: "[requirements | issue-url | description]"

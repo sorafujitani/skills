@@ -1,5 +1,5 @@
 ---
-name: pr-cmt-plan
+name: planning-pr-comments
 description: |
   GitHub PRのレビューコメント分析と改善計画の策定。
   現在のブランチに関連するPRの未解決コメントを取得・分析し、

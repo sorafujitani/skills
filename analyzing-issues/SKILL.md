@@ -1,5 +1,5 @@
 ---
-name: plan-issue-analyzer
+name: analyzing-issues
 description: |
   OSSのissue・バグレポート・機能提案を4フェーズで段階的に分析し、
   TDDベースの実装計画を作成する。コード変更は行わず調査・分析・計画のみ。

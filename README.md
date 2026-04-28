@@ -25,68 +25,68 @@ Each skill ends up at `~/.claude/skills/<skill>/SKILL.md` (or the equivalent dir
 
 Hands-on modes that hold the keyboard for you instead of writing code on your behalf.
 
-- **code-mode-guide-coding** — Guided coding mode. The agent never writes code; it tells you what to write and where, phase by phase, until the task is done.
+- **guided-coding** — The agent never writes code; it tells you what to write and where, phase by phase, until the task is done.
 
   ```bash
-  npx skills add sorafujitani/skills/code-mode-guide-coding
+  npx skills add sorafujitani/skills/guided-coding
   ```
 
-- **code-mode-print-debug** — Print-debug walkthrough. One step, one observation. Place a `println` / `console.log`, run, read, then decide the next probe — both to chase a bug and to learn an unfamiliar codebase.
+- **print-debugging** — One step, one observation. Place a `println` / `console.log`, run, read, then decide the next probe — both to chase a bug and to learn an unfamiliar codebase.
 
   ```bash
-  npx skills add sorafujitani/skills/code-mode-print-debug
+  npx skills add sorafujitani/skills/print-debugging
   ```
 
 ### Planning & design
 
 Read-only modes for thinking through a change before any code moves.
 
-- **plan-dry-coding** — Plan-mode wrapper for PR- to epic-sized design. Parallel Explore/Plan sub-agents, schema contracts, and a design doc plus reviewable dry-coded implementation under `.claude/plans/`. No file edits.
+- **dry-coding** — Plan-mode wrapper for PR- to epic-sized design. Parallel Explore/Plan sub-agents, schema contracts, and a design doc plus reviewable dry-coded implementation under `.claude/plans/`. No file edits.
 
   ```bash
-  npx skills add sorafujitani/skills/plan-dry-coding
+  npx skills add sorafujitani/skills/dry-coding
   ```
 
-- **plan-issue-analyzer** — Four-phase analysis of an OSS issue or feature request: independent parallel investigation, hypothesis/refutation cycles, evidence scoring, then a TDD-shaped implementation plan with cited sources.
+- **analyzing-issues** — Four-phase analysis of an OSS issue or feature request: independent parallel investigation, hypothesis/refutation cycles, evidence scoring, then a TDD-shaped implementation plan with cited sources.
 
   ```bash
-  npx skills add sorafujitani/skills/plan-issue-analyzer
+  npx skills add sorafujitani/skills/analyzing-issues
   ```
 
 ### Pull requests
 
-- **pr-cmt-plan** — Pull the unresolved review comments on the current branch's PR, classify them (Critical / Important / Minor), and produce an ordered remediation plan.
+- **planning-pr-comments** — Pull the unresolved review comments on the current branch's PR, classify them (Critical / Important / Minor), and produce an ordered remediation plan.
 
   ```bash
-  npx skills add sorafujitani/skills/pr-cmt-plan
+  npx skills add sorafujitani/skills/planning-pr-comments
   ```
 
-- **pr-gen** — Generate a PR from the current git state in a standard format (no Linear integration).
+- **generating-prs** — Generate a PR from the current git state in a standard format (no Linear integration).
 
   ```bash
-  npx skills add sorafujitani/skills/pr-gen
+  npx skills add sorafujitani/skills/generating-prs
   ```
 
 ### Code review
 
-- **review-code** — Multi-agent code review. Four sub-agents review in parallel, each finding is checked for code existence and backed by official docs (WebSearch) to keep hallucinations out, then explained with prerequisite knowledge for the reader.
+- **reviewing-code** — Multi-agent code review. Four sub-agents review in parallel, each finding is checked for code existence and backed by official docs (WebSearch) to keep hallucinations out, then explained with prerequisite knowledge for the reader.
 
   ```bash
-  npx skills add sorafujitani/skills/review-code
+  npx skills add sorafujitani/skills/reviewing-code
   ```
 
 ### Testing
 
-- **test-exploratory** — Detect the project's interface (CLI / API / Web API / GUI) and run an exploratory test pass end-to-end: plan → implement → execute → report.
+- **exploratory-testing** — Detect the project's interface (CLI / API / Web API / GUI) and run an exploratory test pass end-to-end: plan → implement → execute → report.
 
   ```bash
-  npx skills add sorafujitani/skills/test-exploratory
+  npx skills add sorafujitani/skills/exploratory-testing
   ```
 
-- **test-pbt** — Property-based testing assistant. Static analysis of the target picks property patterns, composes generators, generates the test code, runs it, and reports — across whatever PBT framework is in the project.
+- **property-based-testing** — Static analysis of the target picks property patterns, composes generators, generates the test code, runs it, and reports — across whatever PBT framework is in the project.
 
   ```bash
-  npx skills add sorafujitani/skills/test-pbt
+  npx skills add sorafujitani/skills/property-based-testing
   ```
 
 ### Utilities
@@ -97,10 +97,10 @@ Read-only modes for thinking through a change before any code moves.
   npx skills add sorafujitani/skills/karin-info
   ```
 
-- **local-repo-finder** — Resolve another repository's path on the local machine, regardless of how the developer organises their workspace, using `fd`.
+- **finding-local-repos** — Resolve another repository's path on the local machine, regardless of how the developer organises their workspace, using `fd`.
 
   ```bash
-  npx skills add sorafujitani/skills/local-repo-finder
+  npx skills add sorafujitani/skills/finding-local-repos
   ```
 
 ## Local development
@@ -122,6 +122,8 @@ After running once, every save under a skill directory shows up in your next Cla
 
 To add a new skill: create `<skill-name>/SKILL.md` at the repo root with YAML frontmatter (`name`, `description`), run `./scripts/link-local.sh`, then commit.
 
+Skill names follow the [Anthropic Agent Skills naming conventions](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices#naming-conventions): lowercase letters, numbers, and hyphens only; gerund or short noun-phrase form; no vague labels (`helper`, `utils`, …) or reserved words (`anthropic`, `claude`).
+
 ## License
 
-MIT — see [LICENSE](./LICENSE) (per-skill exceptions noted in the skill's own `SKILL.md` if any).
+MIT — see [LICENSE](./LICENSE).
