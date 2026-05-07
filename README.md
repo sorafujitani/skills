@@ -103,6 +103,12 @@ Read-only modes for thinking through a change before any code moves.
   npx skills add sorafujitani/skills/finding-local-repos
   ```
 
+- **doc-prerequisite-knowledge** — Explain a topic from its prerequisite knowledge upward, with verified official-doc links at every step. Triggered by requests like 「〜について基本と前提知識から理解できるように教えて」 / "explain X from basics including prerequisites".
+
+  ```bash
+  npx skills add sorafujitani/skills/doc-prerequisite-knowledge
+  ```
+
 ## Local development
 
 This repository lives directly at `~/.claude/skills/` on my own machine, which is the path Claude Code already loads user skills from. Editing a skill's `SKILL.md` here means the change is picked up by the next Claude Code session — no symlinks, no `npx skills add` round-trip.
