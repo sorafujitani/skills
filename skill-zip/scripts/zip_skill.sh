@@ -4,13 +4,13 @@
 # Usage: zip_skill.sh <name> [<source-dir>] [<output-path>]
 #   name        — skill name (becomes ZIP root dir and filename)
 #   source-dir  — defaults to ~/.claude/skills/<name>
-#   output-path — defaults to ~/Desktop/<name>.zip
+#   output-path — defaults to ~/Downloads/<name>.zip
 
 set -euo pipefail
 
 NAME="${1:?skill name required (arg 1)}"
 SOURCE="${2:-$HOME/.claude/skills/$NAME}"
-OUT="${3:-$HOME/Desktop/$NAME.zip}"
+OUT="${3:-$HOME/Downloads/$NAME.zip}"
 
 [[ -d "$SOURCE" ]] || { echo "ERROR: source dir not found: $SOURCE" >&2; exit 1; }
 [[ -f "$SOURCE/SKILL.md" ]] || { echo "ERROR: $SOURCE has no SKILL.md" >&2; exit 1; }

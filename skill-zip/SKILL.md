@@ -1,6 +1,6 @@
 ---
 name: skill-zip
-description: "ローカルの Claude Code skill ディレクトリを ZIP に固めて、Claude Desktop アプリ (consumer 版、Settings から Customize から Skills) のアップロード用ファイルとして書き出す。Claude Code CLI と異なり Claude Desktop は ~/.claude/skills/ を読まず ZIP アップロード方式のため、その橋渡しを提供する。プロンプトに skill 名を含めて呼ぶ (例 — 「graph-think-map を zip 化して」「Claude Desktop 用に doc-prerequisite-knowledge を package して」「skill を Desktop アプリに upload できる形にして」)。出力 default は ~/Desktop/{name}.zip。"
+description: "ローカルの Claude Code skill ディレクトリを ZIP に固めて、Claude Desktop アプリ (consumer 版、Settings から Customize から Skills) のアップロード用ファイルとして書き出す。Claude Code CLI と異なり Claude Desktop は ~/.claude/skills/ を読まず ZIP アップロード方式のため、その橋渡しを提供する。プロンプトに skill 名を含めて呼ぶ (例 — 「graph-think-map を zip 化して」「Claude Desktop 用に doc-prerequisite-knowledge を package して」「skill を Desktop アプリに upload できる形にして」)。出力 default は ~/Downloads/{name}.zip。"
 ---
 
 # Skill Zip
@@ -51,7 +51,7 @@ description: "ローカルの Claude Code skill ディレクトリを ZIP に固
 引数:
 - `<name>` (必須): skill 名 (ZIP root ディレクトリ名と filename に使う)
 - `<source-dir>` (省略時): `~/.claude/skills/<name>`
-- `<output-path>` (省略時): `~/Desktop/<name>.zip`
+- `<output-path>` (省略時): `~/Downloads/<name>.zip`
 
 スクリプトの保証:
 - ZIP の root には `<name>/` だけが入る (skill 標準形式)。Desktop はこれを期待する

@@ -115,7 +115,7 @@ Read-only modes for thinking through a change before any code moves.
   npx skills add sorafujitani/skills/graph-think-map
   ```
 
-- **skill-zip** — Package a local Claude Code skill (`~/.claude/skills/<name>/`) into a ZIP at `~/Desktop/<name>.zip` for upload to the Claude Desktop app's *Settings → Customize → Skills*. Bridges the gap between the CLI's directory-based skills and the desktop app's ZIP-upload flow. Triggered by 「skill を zip 化して」「Claude Desktop 用に package して」.
+- **skill-zip** — Package a local Claude Code skill (`~/.claude/skills/<name>/`) into a ZIP at `~/Downloads/<name>.zip` for upload to the Claude Desktop app's *Settings → Customize → Skills*. Bridges the gap between the CLI's directory-based skills and the desktop app's ZIP-upload flow. Triggered by 「skill を zip 化して」「Claude Desktop 用に package して」.
 
   ```bash
   npx skills add sorafujitani/skills/skill-zip
