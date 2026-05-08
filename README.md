@@ -109,6 +109,12 @@ Read-only modes for thinking through a change before any code moves.
   npx skills add sorafujitani/skills/doc-prerequisite-knowledge
   ```
 
+- **graph-think-map** — Turn prose-style or half-organized thoughts into a Mermaid graph plus a node/edge table and a five-axis validation report (logical consistency, concrete-vs-abstract balance, fact-vs-hypothesis separation, implicit premises, missing perspectives). Triggered by 「考えを整理して」「主張をマップして」 / "argument mapping" / "concept map".
+
+  ```bash
+  npx skills add sorafujitani/skills/graph-think-map
+  ```
+
 ## Local development
 
 This repository lives directly at `~/.claude/skills/` on my own machine, which is the path Claude Code already loads user skills from. Editing a skill's `SKILL.md` here means the change is picked up by the next Claude Code session — no symlinks, no `npx skills add` round-trip.
