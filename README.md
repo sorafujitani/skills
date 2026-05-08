@@ -25,16 +25,16 @@ Each skill ends up at `~/.claude/skills/<skill>/SKILL.md` (or the equivalent dir
 
 Hands-on modes that hold the keyboard for you instead of writing code on your behalf.
 
-- **guided-coding** — The agent never writes code; it tells you what to write and where, phase by phase, until the task is done.
+- **guided-code** — The agent never writes code; it tells you what to write and where, phase by phase, until the task is done.
 
   ```bash
-  npx skills add sorafujitani/skills/guided-coding
+  npx skills add sorafujitani/skills/guided-code
   ```
 
-- **print-debugging** — One step, one observation. Place a `println` / `console.log`, run, read, then decide the next probe — both to chase a bug and to learn an unfamiliar codebase.
+- **print-debug** — One step, one observation. Place a `println` / `console.log`, run, read, then decide the next probe — both to chase a bug and to learn an unfamiliar codebase.
 
   ```bash
-  npx skills add sorafujitani/skills/print-debugging
+  npx skills add sorafujitani/skills/print-debug
   ```
 
 ### Planning & design
@@ -47,46 +47,46 @@ Read-only modes for thinking through a change before any code moves.
   npx skills add sorafujitani/skills/dry-coding
   ```
 
-- **analyzing-issues** — Four-phase analysis of an OSS issue or feature request: independent parallel investigation, hypothesis/refutation cycles, evidence scoring, then a TDD-shaped implementation plan with cited sources.
+- **issue-analysis** — Four-phase analysis of an OSS issue or feature request: independent parallel investigation, hypothesis/refutation cycles, evidence scoring, then a TDD-shaped implementation plan with cited sources.
 
   ```bash
-  npx skills add sorafujitani/skills/analyzing-issues
+  npx skills add sorafujitani/skills/issue-analysis
   ```
 
 ### Pull requests
 
-- **planning-pr-comments** — Pull the unresolved review comments on the current branch's PR, classify them (Critical / Important / Minor), and produce an ordered remediation plan.
+- **pr-comment-plan** — Pull the unresolved review comments on the current branch's PR, classify them (Critical / Important / Minor), and produce an ordered remediation plan.
 
   ```bash
-  npx skills add sorafujitani/skills/planning-pr-comments
+  npx skills add sorafujitani/skills/pr-comment-plan
   ```
 
-- **generating-prs** — Generate a PR from the current git state in a standard format (no Linear integration).
+- **pr-generator** — Generate a PR from the current git state in a standard format (no Linear integration).
 
   ```bash
-  npx skills add sorafujitani/skills/generating-prs
+  npx skills add sorafujitani/skills/pr-generator
   ```
 
 ### Code review
 
-- **reviewing-code** — Multi-agent code review. Four sub-agents review in parallel, each finding is checked for code existence and backed by official docs (WebSearch) to keep hallucinations out, then explained with prerequisite knowledge for the reader.
+- **review-code** — Multi-agent code review. Four sub-agents review in parallel, each finding is checked for code existence and backed by official docs (WebSearch) to keep hallucinations out, then explained with prerequisite knowledge for the reader.
 
   ```bash
-  npx skills add sorafujitani/skills/reviewing-code
+  npx skills add sorafujitani/skills/review-code
   ```
 
 ### Testing
 
-- **exploratory-testing** — Detect the project's interface (CLI / API / Web API / GUI) and run an exploratory test pass end-to-end: plan → implement → execute → report.
+- **exploratory-test** — Detect the project's interface (CLI / API / Web API / GUI) and run an exploratory test pass end-to-end: plan → implement → execute → report.
 
   ```bash
-  npx skills add sorafujitani/skills/exploratory-testing
+  npx skills add sorafujitani/skills/exploratory-test
   ```
 
-- **property-based-testing** — Static analysis of the target picks property patterns, composes generators, generates the test code, runs it, and reports — across whatever PBT framework is in the project.
+- **property-based-test** — Static analysis of the target picks property patterns, composes generators, generates the test code, runs it, and reports — across whatever PBT framework is in the project.
 
   ```bash
-  npx skills add sorafujitani/skills/property-based-testing
+  npx skills add sorafujitani/skills/property-based-test
   ```
 
 ### Utilities
@@ -97,10 +97,10 @@ Read-only modes for thinking through a change before any code moves.
   npx skills add sorafujitani/skills/karin-info
   ```
 
-- **finding-local-repos** — Resolve another repository's path on the local machine, regardless of how the developer organises their workspace, using `fd`.
+- **local-repo-finder** — Resolve another repository's path on the local machine, regardless of how the developer organises their workspace, using `fd`.
 
   ```bash
-  npx skills add sorafujitani/skills/finding-local-repos
+  npx skills add sorafujitani/skills/local-repo-finder
   ```
 
 - **doc-prerequisite-knowledge** — Explain a topic from its prerequisite knowledge upward, with verified official-doc links at every step. Triggered by requests like 「〜について基本と前提知識から理解できるように教えて」 / "explain X from basics including prerequisites".

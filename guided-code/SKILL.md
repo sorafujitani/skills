@@ -1,5 +1,5 @@
 ---
-name: guided-coding
+name: guided-code
 description: |
   ガイド付きコーディングモード。ユーザーが自分の手でコードを書きながら学べるようにサポートする。
   AIはコードを直接書かず、何を・どこに書くべきかをガイドする。

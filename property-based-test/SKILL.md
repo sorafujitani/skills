@@ -1,5 +1,5 @@
 ---
-name: property-based-testing
+name: property-based-test
 description: |
   Property-Based Testing（PBT）の自動設計・実装支援。テスト対象コードを静的分析し、
   プロパティパターン選定・ジェネレータ合成・テストコード生成・実行・レポートを自動実行する。

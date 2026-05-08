@@ -1,5 +1,5 @@
 ---
-name: finding-local-repos
+name: local-repo-finder
 description: |
   Quickly detect Git repository paths in local environments.
   Use when referencing another repository or absorbing directory layout differences across developers.
