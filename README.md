@@ -121,6 +121,12 @@ Read-only modes for thinking through a change before any code moves.
   npx skills add sorafujitani/skills/skill-zip
   ```
 
+- **ts-lint-searcher** — Cross-search TypeScript lint rules across ESLint (with typescript-eslint), oxlint, and Biome lint. Given a behaviour to detect ("missing await on async calls") or a rule name (`@typescript-eslint/no-floating-promises`), returns a 3-way comparison table with rule names, support status, and official documentation links. A bundled mapping table answers well-known rules instantly; unknown rules trigger parallel WebFetch against the four official rule indexes. Triggered by 「<挙動> を検出する lint ルールは？」「`<rule>` の Biomeで同等のrule は？」 / "compare lint rules across ESLint / oxlint / Biome".
+
+  ```bash
+  npx skills add sorafujitani/skills/ts-lint-searcher
+  ```
+
 ## Local development
 
 This repository lives directly at `~/.claude/skills/` on my own machine, which is the path Claude Code already loads user skills from. Editing a skill's `SKILL.md` here means the change is picked up by the next Claude Code session — no symlinks, no `npx skills add` round-trip.
