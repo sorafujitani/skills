@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kaguya Benchmark"
+  short_description: "KaguyaとWezTermのサイズと起動速度を測定"
+  default_prompt: "Use $kaguya-benchmark to compare Kaguya and WezTerm size and startup performance."
