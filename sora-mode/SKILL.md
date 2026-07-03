@@ -45,8 +45,8 @@ poteto-mode routes to pstack/Cursor skills. Here each name resolves as follows; 
 | **arena** | N parallel candidate subagents on different models (opus / sonnet / haiku for diversity), one blinded judge subagent. Sanitized labels; the judge never sees model names. |
 | **create-skill** | The `skill-creator` skill. |
 | **tdd** | The failing test committed first, the fix on top. |
-| principle leaf skills | Brain leaf files: `~/.claude/brain/principles/<name>.md`. |
-| **reflect** / **recall** | The `reflect` skill / the brain (`~/.claude/brain/index.md`, `brain` skill). |
+| principle leaf skills | Brain leaf files: `~/brain/principles/<name>.md`. |
+| **reflect** / **recall** | The `reflect` skill / the brain (`~/brain/index.md`, `brain` skill). |
 | `/loop` | The `/loop` skill. |
 | `AskQuestion` | The AskUserQuestion tool. |
 | `Task` / `subagent_type: poteto-agent` | The Agent tool, default agent type. Subagents run in the background by default. |
@@ -54,7 +54,7 @@ poteto-mode routes to pstack/Cursor skills. Here each name resolves as follows; 
 
 ## Principles
 
-Read the brain leaf file in full for any principle you apply: `~/.claude/brain/principles/<name>.md`. Each entry names when it applies.
+Read the brain leaf file in full for any principle you apply: `~/brain/principles/<name>.md`. Each entry names when it applies.
 
 **Core**
 

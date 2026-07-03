@@ -12,7 +12,7 @@ Plan when the change spans three or more files, introduces architecture, has com
 
 ## 1. Re-read principles
 
-Read the **Principles** section of the `sora-mode` skill end to end, and the brain leaf files it indexes (`~/.claude/brain/principles/`). The principles govern every plan decision; cross-link them.
+Read the **Principles** section of the `sora-mode` skill end to end, and the brain leaf files it indexes (`~/brain/principles/`). The principles govern every plan decision; cross-link them.
 
 ## 2. Scope and constraints
 
