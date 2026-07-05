@@ -43,7 +43,7 @@ poteto-mode routes to pstack/Cursor skills. Here each name resolves as follows; 
 | **show-me-your-work** | A decision log file, `decision.md` (or `decision.tsv` for hillclimbs), in the session scratchpad, or gitignored in-repo when it must survive the session. One row per decision or attempt. |
 | **figure-it-out** | The `brain-plan` skill: a bespoke phased plan for large or cross-cutting work. |
 | **arena** | N parallel candidate subagents on different models (opus / sonnet / haiku for diversity), one blinded judge subagent. Sanitized labels; the judge never sees model names. |
-| **create-skill** | The `skill-creator` skill. |
+| **create-skill** | The `example-skills:skill-creator` skill (fully-qualified; the Skill tool needs the `plugin:skill` form). |
 | **tdd** | The failing test committed first, the fix on top. |
 | principle leaf skills | Brain leaf files: `~/brain/principles/<name>.md`. |
 | **reflect** / **recall** | The `reflect` skill / the brain (`~/brain/index.md`, `brain` skill). |

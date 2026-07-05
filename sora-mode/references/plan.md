@@ -73,7 +73,7 @@ Order phases so infrastructure and shared types land first (the **foundational-t
 
 For changes touching existing code, apply the **redesign-from-first-principles** principle: if we'd built this with the new requirement on day one, what would it look like? Redesign holistically; deliver incrementally.
 
-If a phase creates or edits a skill, the phase instructs the implementer to use the **skill-creator** skill.
+If a phase creates or edits a skill, the phase instructs the implementer to use the **create-skill** skill.
 
 ## 5. Verification per phase
 
