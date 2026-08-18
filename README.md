@@ -89,6 +89,20 @@ Read-only modes for thinking through a change before any code moves.
   npx skills add sorafujitani/skills/property-based-test
   ```
 
+### Agent harness
+
+- **agent-efficiency-audit** — Audit local Codex / Claude Code / Grok / pi session logs and say where the token budget actually went. Use when a usage limit burned faster than expected, or when asking which sessions or skills are expensive.
+
+  ```bash
+  npx skills add sorafujitani/skills/agent-efficiency-audit
+  ```
+
+- **propose-pi-extensions** — From repeated Pi friction (retry loops, huge tool output, the same manual step twice), propose at most one Pi extension. Does not implement unless asked.
+
+  ```bash
+  npx skills add sorafujitani/skills/propose-pi-extensions
+  ```
+
 ### Utilities
 
 - **karin-info** — Pulls the latest news, releases, live dates and links about singer-songwriter Karin. via WebSearch / WebFetch.
