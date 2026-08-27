@@ -97,6 +97,12 @@ Read-only modes for thinking through a change before any code moves.
   npx skills add sorafujitani/skills/agent-efficiency-audit
   ```
 
+- **handoff** — Preserve verified state when pausing, resuming, waiting for an external event, or handing an in-progress change to another session.
+
+  ```bash
+  npx skills add sorafujitani/skills/handoff
+  ```
+
 - **propose-pi-extensions** — From repeated Pi friction (retry loops, huge tool output, the same manual step twice), propose at most one Pi extension. Does not implement unless asked.
 
   ```bash
