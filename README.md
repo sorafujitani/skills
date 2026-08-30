@@ -2,6 +2,13 @@
 
 A collection of agent skills I use day-to-day across Claude Code, Codex, Cursor, and other agents that follow the [open agent skills](https://github.com/vercel-labs/skills) convention.
 
+## Local maintenance
+
+This repository is the editing and publishing source for standalone personal
+skills. Codex discovers them through symlinks; external installs and plugin
+caches stay outside the repository. See [MANAGEMENT.md](MANAGEMENT.md) for
+registration, installation, validation, and recovery.
+
 ## Install
 
 Use [`skills`](https://github.com/vercel-labs/skills) to install any single skill, or browse them all interactively:
@@ -13,11 +20,13 @@ npx skills add sorafujitani/skills/<skill>
 # pick from a list
 npx skills add sorafujitani/skills
 
-# install everything for Claude Code only
-npx skills add sorafujitani/skills --skill '*' -a claude-code -g -y
+# install everything for Codex only
+npx skills add sorafujitani/skills --skill '*' -a codex -g -y
 ```
 
-Each skill ends up at `~/.claude/skills/<skill>/SKILL.md` (or the equivalent directory for other agents).
+The installer chooses the discovery directory for the selected agent. Maintainers
+should use the linked-checkout workflow in MANAGEMENT.md instead of installing a
+second copy of their own skills.
 
 ## Catalog
 

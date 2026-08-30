@@ -59,6 +59,7 @@ argument-hint: "[PR-url, branch-name, or empty for current branch]"
 **目的**: 4つの独立subagentが異なる観点から並列にレビューする
 
 `Task(Explore)` を最大4並列で起動。各agentは他のagentの結果を知らない。
+> 直接レビューで済ませず、**必ず同一ターンで4つのsubagentを並列起動**する（Opus 4.8 はサブエージェント生成を控える傾向があるため明示する）。
 
 各agentに渡す情報:
 - 差分（git diff 出力）
