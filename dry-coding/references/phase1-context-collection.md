@@ -2,7 +2,7 @@
 
 ## Explore Agent 起動仕様
 
-3つの `Task(Explore)` を **並列** に起動する。各agentは独立（他の結果を知らない）。
+必要な観点だけ Explore agent を起動する（起動要否と数は SKILL.md Step 2 の基準に従う）。各agentは独立（他の結果を知らない）。
 
 ### Agent A: Architecture Mapping
 

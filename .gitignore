@@ -7,3 +7,6 @@ agent-browser/
 linear/
 mac-cleanup/
 pr:gen-linear/
+
+# eval run outputs (data, not a skill)
+linear-code-leader/evals/workspace/

@@ -2,7 +2,7 @@
 
 ## Plan Agent 起動仕様
 
-2-3の `Task(Plan)` を **並列** に起動。各agentに異なる設計制約（bias）を付与。
+Plan agent を起動する場合は各agentに異なる設計制約（bias）を付与する（起動要否と数は SKILL.md Step 1 の基準に従う）。
 
 ### 設計制約プロファイル
 

@@ -1,7 +1,5 @@
 # 設計ドキュメントテンプレート
 
-出力先: `.claude/plans/design-{YYYY-MM-DD}-{short-desc}.md`
-
 ## テンプレート
 
 ```markdown

@@ -60,12 +60,13 @@ So the expensive thing is almost never output. It is context that was loaded ear
    python3 scripts/audit.py dupes --days 7    # files read again while already in context
    ```
 
-5. Report in Japanese. Lead with the conclusion, then the numbers, then named fixes.
+5. If the user also asks about work quality, report it separately from token efficiency. Cost logs do not measure correctness. Use bounded proxies: direct user corrections, failed verification/rework, and reviewer → fixer → verifier artifacts. Prefer structured result files and sampled top sessions over delegating an unbounded archive scan. State that these measure final-gate effectiveness, not initial model accuracy.
+6. Report in Japanese. Lead with the conclusion, then the numbers, then named fixes.
 
 ## What to look for
 
 | 症状 | 閾値 | 意味 |
-|---|---|---|
+| --- | --- | --- |
 | ctx 中央値 | > 100k | セッションを畳んでいない。二乗コストの本体 |
 | turns / 指示 | > 20 | 探索が発散。スコープが曖昧なまま着手した |
 | 出力比率 | < 2% | 消費はコンテキスト再送。出力を削っても無意味 |

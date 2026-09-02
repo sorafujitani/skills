@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# Package a Claude Code skill into a ZIP for Claude Desktop upload.
+# Package an Agent Skill and its resources into a portable ZIP.
 #
 # Usage: zip_skill.sh <name> [<source-dir>] [<output-path>]
 #   name        — skill name (becomes ZIP root dir and filename)
-#   source-dir  — defaults to ~/.claude/skills/<name>
+#   source-dir  — defaults to ~/.agents/skills/<name>
 #   output-path — defaults to ~/Downloads/<name>.zip
 
 set -euo pipefail
 
 NAME="${1:?skill name required (arg 1)}"
-SOURCE="${2:-$HOME/.claude/skills/$NAME}"
+SOURCE="${2:-$HOME/.agents/skills/$NAME}"
 OUT="${3:-$HOME/Downloads/$NAME.zip}"
 
 [[ -d "$SOURCE" ]] || { echo "ERROR: source dir not found: $SOURCE" >&2; exit 1; }
@@ -19,7 +19,7 @@ OUT="${3:-$HOME/Downloads/$NAME.zip}"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
-cp -R "$SOURCE" "$TMP/$NAME"
+cp -RL "$SOURCE" "$TMP/$NAME"
 
 # Strip macOS / Python junk
 find "$TMP/$NAME" \

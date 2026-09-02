@@ -1,6 +1,7 @@
 ---
 name: pr-comment-plan
 description: |
+  明示的に `pr-comment-plan` を呼び出した場合のみ使用する。
   GitHub PRのレビューコメント分析と改善計画の策定。
   現在のブランチに関連するPRの未解決コメントを取得・分析し、
   重要度分類（Critical/Important/Minor）と体系的な改善実行計画を生成する。
@@ -18,7 +19,7 @@ disable-model-invocation: true
    - 関連するPR番号を特定: `gh pr list --head [branch-name] --json number,url --jq '.[0]'`
 
 2. **PRコンテキスト取得**
-   - `ctx:github` エージェント（`Task` ツールで `subagent_type: "ctx:github"`）を呼び出し、PR情報を一括取得する
+   - `gh pr view --json` と `gh api` で PR 情報（body, comments, reviews, files）を一括取得する
    - プロンプト例: `"{owner}/{repo}#{PR番号} のPR情報を取得して"`
    - 返却される構造化コンテキスト（`=== GITHUB_CONTEXT: PR ===` ブロック）からメタデータ・BODY・REVIEW_STATUS・FILES・COMMENTSを利用する
    - インラインレビューコメント（ファイル・行単位）が必要な場合は追加で取得: `gh api repos/{owner}/{repo}/pulls/{PR番号}/comments --jq '.[] | {path, line, body, user: .user.login, created_at}'`
@@ -51,6 +52,7 @@ disable-model-invocation: true
 ## 出力形式
 
 ### 📊 PR情報
+
 - **PR番号**: #[番号]
 - **タイトル**: [PRタイトル]
 - **URL**: [GitHub URL]
@@ -59,6 +61,7 @@ disable-model-invocation: true
 ### 🔍 コメント分析
 
 #### Critical Issues 🔴
+
 1. **[コメント作成者]: [コメント内容の要約]**
    - 場所: `file.ts:L123`
    - カテゴリ: [カテゴリ]
@@ -66,14 +69,17 @@ disable-model-invocation: true
    - 影響: [影響範囲の説明]
 
 #### Important Issues 🟡
+
 [同様の形式で記載]
 
 #### Minor Issues 🟢
+
 [同様の形式で記載]
 
 ### 📝 改善実行計画
 
 #### Phase 1: Critical修正
+
 ```bash
 # 1. [修正内容の説明]
 # 対象: file.ts
@@ -85,18 +91,22 @@ git commit -m "fix: [修正内容]"
 ```
 
 #### Phase 2: Important修正
+
 [同様の形式で記載]
 
 #### Phase 3: Minor修正
+
 [同様の形式で記載]
 
 ### ✅ 検証チェックリスト
+
 - [ ] すべてのCriticalコメントに対応
 - [ ] テストが通過することを確認
 - [ ] 新たな問題を導入していないことを確認
 - [ ] コメントへの返信を準備
 
 ### 📃 関連Reference
+
 ```markdown
 # コメント内容に関連するReference URL
 
@@ -104,10 +114,3 @@ git commit -m "fix: [修正内容]"
 - [Reference 2](https://example.com/ref2)
 ```
 
-## 考慮事項
-
-- **優先順位**: Criticalから順に対応し、ブロッカーを解消
-- **一貫性**: 同種の問題は一括で修正
-- **透明性**: 各修正がどのコメントに対応するか明確化
-- **検証可能性**: 修正が適切に機能することを確認
-- **情報の公式な引用**: 正確な理解や対応を促す

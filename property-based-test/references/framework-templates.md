@@ -433,7 +433,7 @@ install:
     <dependency>
         <groupId>net.jqwik</groupId>
         <artifactId>jqwik</artifactId>
-        <version>1.8.0</version>
+        <version>{latest}</version> <!-- Maven Central で確認 -->
         <scope>test</scope>
     </dependency>
 

@@ -1,6 +1,6 @@
 ---
 name: milestone-triage
-description: Manage a personal triage-grouped wishlist ("やりたいこと") with local JSON persistence at ~/.claude/data/milestone-triage/state.json. INVOKE ONLY when the user explicitly mentions "milestone-triage" / "milestone triage" / "トリアージ" in the context of their own task list, or directly asks to view/add/move/edit/remove items in this triage backlog. Do NOT trigger from generic todo, task, or planning discussions — this skill is opt-in. Use for (1) showing items grouped by triage, (2) adding new items, (3) moving items between triages, (4) editing/removing items, (5) reshaping the triage groups themselves (add/remove/rename/reorder).
+description: Manage a personal triage-grouped wishlist ("やりたいこと") persisted at ~/.claude/data/milestone-triage/state.json. Use only when the user names this skill ("milestone-triage", "トリアージ") or asks to view/add/move/edit/remove items in this specific backlog; generic todo or planning talk does not qualify. Covers listing by triage, adding/moving/editing/removing items, and reshaping the triage groups.
 ---
 
 # Milestone Triage
@@ -20,7 +20,7 @@ A triage-grouped wishlist for the user's "やりたいこと". State lives in a 
 All operations go through `scripts/milestone.py`. Run via the user's `python3`:
 
 ```
-python3 ~/.claude/skills/milestone-triage/scripts/milestone.py <subcommand> [...]
+python3 ~/.agents/skills/milestone-triage/scripts/milestone.py <subcommand> [...]
 ```
 
 ### Item commands
@@ -51,7 +51,7 @@ Errors exit nonzero with a single-line message (e.g. `unknown triage 'foo'. know
 
 When the user explicitly invokes this skill:
 
-1. **Show first** — start with `list` (or `list --triage X` if they named one) so the user sees current state with ids. Render the grouped output as-is; it's already formatted for humans.
+1. **Show first** — start with `list` (or `list --triage X` if they named one) so the user sees current state with ids.
 2. **Apply the change** — translate the user's natural-language request into one or more subcommand calls. Examples:
    - "ブログ書くを now に上げて" → `move <id> now` (look up the id from the prior list output)
    - "Redis 移行を追加、優先度は next" → `add "Redis 移行" --triage next`

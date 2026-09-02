@@ -19,7 +19,7 @@ Absorbs different directory structures across developers and enables shareable W
 
 ## Prerequisites
 
-`fd` command is required (approximately 30x faster than `find`).
+`fd` is preferred; fall back to `find` when it is missing. In a ghq-managed environment `ghq list -p <name>` also resolves the path.
 ```bash
 # macOS
 brew install fd
@@ -53,16 +53,6 @@ Save the detected path to a variable for use in subsequent operations.
 REPO_ROOT="$(fd -H "^\.git$" ~/ -t d 2>/dev/null | xargs -I {} dirname {} | grep "<REPO_NAME>$" | head -1)"
 ```
 
-## Command Reference
-
-| Option | Description |
-|--------|-------------|
-| `fd` | Fast alternative to find command |
-| `-H` | Include hidden files/directories in search |
-| `"^\.git$"` | Exact match for `.git` name (regex) |
-| `~/` | Start search from home directory |
-| `-t d` | Search directories only |
-| `2>/dev/null` | Suppress error output |
 
 ## Examples
 
@@ -105,31 +95,16 @@ fd -H "^\.git$" ~/ -t d 2>/dev/null | xargs -I {} dirname {} | grep "project-a/a
 
 ## Fallback
 
-Use `find` if `fd` is not installed (approximately 30x slower):
+Use `find` if `fd` is not installed:
 ```bash
 find ~/ -type d -name ".git" 2>/dev/null | xargs -I {} dirname {} | grep "<REPO_NAME>$" | head -1
 ```
 
-## Performance
-
-| Command | Execution Time | Notes |
-|---------|----------------|-------|
-| `fd` | ~2.4 sec | Fastest, recommended |
-| `find` | ~1 min 19 sec | ~32x slower than fd |
-| `ghq list` | ~1 min 50 sec | Environment dependent, slowest |
 
 ## Boundaries
 
-### DO NOT
-
-- Do not search from outside home directory (e.g., `/`)
-- Do not modify files in detected paths without permission
-- Do not output authentication credentials or `.env` file contents
-
-### ASK FIRST
-
-- When multiple repositories match, ask which one to use
-- Confirm before modifying files in detected repositories
+- Search under `~/` only (searching from `/` is slow).
+- When multiple repositories match, show the candidates and ask which one to use.
 
 ## Troubleshooting
 

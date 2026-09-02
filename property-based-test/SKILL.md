@@ -1,9 +1,10 @@
 ---
 name: property-based-test
 description: |
+  明示的に `property-based-test` を呼び出した場合のみ使用する。
   Property-Based Testing（PBT）の自動設計・実装支援。テスト対象コードを静的分析し、
   プロパティパターン選定・ジェネレータ合成・テストコード生成・実行・レポートを自動実行する。
-  フレームワーク自動検出。サブエージェント並列調査。
+  フレームワーク自動検出。必要な場合だけ独立調査を並列実行する。
 disable-model-invocation: true
 argument-hint: "<target-path> [--focus <focus-area>]"
 ---
@@ -22,13 +23,7 @@ output_scope: test_files_only
 
 ```yaml
 arguments: "$ARGUMENTS"
-parse_rules:
-  - pattern: "^(?<target_path>\\S+)(?:\\s+--focus\\s+(?<focus>.+))?$"
-    extract:
-      target_path: required  # ファイルパス or モジュール名
-      focus: optional        # カンマ区切りの重点観点
-  - pattern: "^$"
-    action: AskUserQuestion("テスト対象のファイルパスを指定してください")
+arguments_format: "<target_path> [--focus 観点1,観点2]"  # target_path 必須。空ならユーザーにファイルパスを確認する
 focus_mapping:
   "境界値|boundary":        [invariant, metamorphic]
   "エラー処理|error":       [invariant, oracle]
@@ -52,10 +47,14 @@ Phase1:Analyze ──gate:data_ready──▶ Phase2:Design ──gate:plan_read
 
 ## PHASE_1: ANALYZE
 
-### 1.1 サブエージェント起動（並列）
+### 1.1 サブエージェント起動（条件付き）
+
+小規模な対象や親の直接分析で十分な場合は、subagentを使わずに調査する。独立した成果物や競合仮説があり、調整コストを上回る場合のみ、必要なタスクだけを並列起動する。固定数を必須にしない。
+
+候補タスク:
 
 ```yaml
-parallel_tasks:
+candidate_tasks:
   - agent: Task(Explore)
     id: agent_a
     label: "対象コード静的分析"
@@ -188,49 +187,17 @@ phase1_output:
 
 ### 2.1 プロパティ選定アルゴリズム
 
-```
-FOR EACH function f IN phase1_output.functions:
-  candidates = []
+各関数に対して、当てはまるパターンを以下の条件で選ぶ:
 
-  # Rule 1: Round-trip
-  IF ∃ pair(f, g) IN function_pairs WHERE relation ∈ {"encode/decode", "serialize/deserialize", "to/from", "write/read"}:
-    candidates.append({pattern: "roundtrip", fn: [f, g], weight: 10})
+- **Round-trip**: encode/decode、serialize/deserialize、to/from、write/read の対がある
+- **Oracle**: stdlib・素朴実装・旧版など参照実装がある
+- **Invariant**: コレクション操作、または出力に制約がある
+- **Idempotent**: 入力と出力の型が同じ純粋関数で、normalize/format/clean/trim/canonicalize/dedupe/sanitize の性質を持つ
+- **Stateful**: 状態を変更する
+- **Metamorphic**: search/query/filter/sort/数値計算で、入力変換と出力の関係が述べられる
+- **Algebraic**: 結合則・交換則・単位元を持つ二項演算
 
-  # Rule 2: Invariant
-  IF f operates on collection OR f has output constraints:
-    FOR EACH inv IN known_invariants(f):
-      candidates.append({pattern: "invariant", fn: f, invariant: inv, weight: 8})
-
-  # Rule 3: Idempotent
-  IF f.return_type == f.params[0].type AND f.is_pure AND f.name matches /normalize|format|clean|trim|canonicalize|dedupe|sanitize/:
-    candidates.append({pattern: "idempotent", fn: f, weight: 7})
-
-  # Rule 4: Oracle
-  IF ∃ reference_impl(f) IN {stdlib, naive_impl, previous_version}:
-    candidates.append({pattern: "oracle", fn: f, oracle: reference_impl, weight: 9})
-
-  # Rule 5: Metamorphic
-  IF f is search/query/filter/sort/numeric_computation:
-    FOR EACH relation IN metamorphic_relations(f):
-      candidates.append({pattern: "metamorphic", fn: f, relation: relation, weight: 6})
-
-  # Rule 6: Algebraic
-  IF f is binary_operation AND (associative OR commutative OR has_identity):
-    FOR EACH law IN algebraic_laws(f):
-      candidates.append({pattern: "algebraic", fn: f, law: law, weight: 5})
-
-  # Rule 7: Stateful
-  IF f.mutates_state:
-    candidates.append({pattern: "stateful", fn: f, weight: 7})
-
-  # Focus boost
-  IF focus_areas != null:
-    FOR EACH c IN candidates:
-      IF c.pattern IN focus_mapping[focus_area]: c.weight += 5
-
-  # 選定: weight 降順、上位N個（N = min(candidates.length, 5)）
-  selected += candidates.sort_by(weight DESC).take(5)
-```
+優先順は roundtrip > oracle > invariant > idempotent / stateful > metamorphic > algebraic。`--focus` に合致するパターンは繰り上げる。1 関数あたり価値の高いものに絞り、網羅は目的にしない。
 
 ### 2.2 プロパティ仕様の構造化
 
@@ -340,6 +307,8 @@ shrinking_rules:
 
 ---
 
+Phase 3の完了前に [強度チェックとジェネレータの現実性](references/strength-and-known-bugs.md) を実施する。
+
 ## PHASE_4: EXECUTE
 
 ```
@@ -360,7 +329,7 @@ PROCEDURE execute_tests(test_file_path, env):
       analysis = classify_failure(failure)
       # analysis.type ∈ {"true_bug", "false_positive", "generator_issue", "timeout"}
       MATCH analysis.type:
-        "true_bug"        → record_bug(failure.property, failure.counterexample, failure.shrunk_value)
+        "true_bug"        → record_bug(failure.property, failure.counterexample, failure.shrunk_value), pin_defect(failure), re-run
         "false_positive"  → fix_property(failure.property), re-run
         "generator_issue" → fix_generator(failure.generator), re-run
         "timeout"         → reduce_num_runs(failure.property), re-run
@@ -368,6 +337,8 @@ PROCEDURE execute_tests(test_file_path, env):
 ```
 
 ---
+
+実バグを確認したら [既知バグのpin手順](references/strength-and-known-bugs.md) に従う。
 
 ## PHASE_5: REPORT
 
@@ -396,6 +367,7 @@ report_schema:
       counterexample: object
       shrunk_to: object
       suggested_fix: string | null
+      pinned: boolean  # falseなら判断待ちの理由を記載
 
   generator_notes:
     - param: string

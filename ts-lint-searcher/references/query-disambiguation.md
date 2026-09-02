@@ -119,7 +119,7 @@
 - 不要な型アサーション禁止 → `no-unnecessary-type-assertion`
 - `consistent-type-imports` → `import type` の強制
 
-**判断**: 主解釈を選ばず **AskUserQuestion で意図を絞る**。並列で全部出さない。
+**判断**: 主解釈を選ばず **ユーザーに確認質問して意図を絞る**。並列で全部出さない。
 
 ---
 
@@ -187,7 +187,7 @@
 - new の誤用 → `@typescript-eslint/no-misused-new`
 - this 別名 → `@typescript-eslint/no-this-alias`
 
-**判断**: AskUserQuestion で意図を絞る。
+**判断**: ユーザーに確認質問して意図を絞る。
 
 ---
 

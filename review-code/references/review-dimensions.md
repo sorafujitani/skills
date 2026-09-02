@@ -2,7 +2,7 @@
 
 ## 概要
 
-4つの独立したsubagentが並列にレビューする。各agentは他のagentの結果を知らない。
+以下は観点定義。起動する agent の数は SKILL.md Phase 2 の判断に従い、起動した agent は互いの結果を知らない。
 
 ## Agent A: Correctness（正確性）
 
@@ -96,7 +96,8 @@ Phase 1 で検出されたフレームワークに応じて Agent D に追加す
 
 | フレームワーク | 追加観点 |
 |--------------|---------|
-| Prisma | `@map` 使用、リレーション命名、マイグレーション整合性 |
+| Prisma | `@map` 使用（camelCase field への `@map`）、リレーション命名、マイグレーション整合性、連続リクエストを想定した排他ロック（`FOR UPDATE`）、トランザクション内の責務分離 |
+| Node.js/TypeScript API | 純粋関数として切り出せるロジックの分離、独立した非同期処理の並列化（直列 await の見直し）、Top type（`any`/`unknown`）・Bottom type（`never`）の理由なき使用 |
 | GraphQL | DataLoader、resolver N+1、スキーマ設計 |
 | Next.js | Server/Client Component分離、データフェッチ戦略 |
 | Express/Fastify | ミドルウェア順序、エラーミドルウェア |

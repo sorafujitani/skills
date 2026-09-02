@@ -3,7 +3,7 @@ name: issue-analysis
 description: |
   OSSのissue・バグレポート・機能提案を4フェーズで段階的に分析し、
   TDDベースの実装計画を作成する。コード変更は行わず調査・分析・計画のみ。
-  独立並列調査→仮説-反証サイクル→証拠スコアリングにより、
+  必要に応じた独立調査→仮説-反証サイクル→証拠スコアリングにより、
   確証バイアス・アンカリング等の認知バイアスを排除した課題特定を行う。
   ハルシネーション防止のためソース実在確認・WebSearchによる裏取りを実施。
   推論過程・論拠・Next Actionを含む構造化レポートを出力する。
@@ -35,7 +35,7 @@ argument-hint: "[issue-url or description]"
 
 `$ARGUMENTS` の内容に応じて入力を処理する:
 
-1. **GitHub URL の場合**: `Task` ツール（`subagent_type: "ctx:github"`）で Issue/PR/Discussion の構造化情報を取得
+1. **GitHub URL の場合**: `gh issue view` / `gh pr view --json`（`ctx:github` エージェントが登録されていればそれでもよい） で Issue/PR/Discussion の構造化情報を取得
 2. **テキストの場合**: そのまま問題記述として使用
 3. **引数なしの場合**: ユーザーに問題の説明を求める
 
@@ -67,9 +67,10 @@ Issue Analyzer Progress:
 
 **目的**: 問題の本質、影響範囲、依存関係を構造的に把握する。バイアスを排除した複数仮説の検証を経て、証拠に基づく課題特定を行う。
 
-**Step 1: 発散的調査（独立並列）**
-1. `Task(ctx:github)` で Issue コンテキスト取得（URL入力時）
-2. `Task(Explore)` を最大4並列で起動（各agentは独立、他の結果を知らない）:
+**Step 1: 発散的調査**
+
+1. `gh issue view` で Issue コンテキスト取得（URL入力時）
+2. 小規模で直接調査が十分なら、subagentを起動せず親が調査する。独立した成果物や競合仮説があり、調整コストを上回る場合のみ、必要な数の `Task(Explore)` を並列起動する（固定数を必須にしない）。各agentは他の結果を知らずに調査する:
    - Agent A: symptom-trace（症状からの逆追跡）
    - Agent B: structural-analysis（構造的弱点分析、報告者の記述に依存しない）
    - Agent C: historical-context（git log/blameからの変更履歴調査）
@@ -77,13 +78,16 @@ Issue Analyzer Progress:
 3. `WebSearch` / `WebFetch` で公式ドキュメント・類似Issueを収集
 
 **Step 2: 仮説数の保証（N-of-1ルール）**
-- 仮説が1つしかない場合、追加の視点から強制的に探索を起動
+
+- 仮説が1つしかなく、親の直接調査だけでは不十分な場合に限り、追加の視点から調査する。独立した成果物や競合仮説の検証があり、調整コストを上回る場合だけsubagentを使い、それ以外は直接調査する。
 
 **Step 3: 仮説-反証サイクル**
-- 各仮説に対して反証agentを起動し、矛盾する証拠を探索
+
+- 各仮説に対して反証を行い、矛盾する証拠を探索する。独立した反証成果物が必要で調整コストを上回る場合だけsubagentを使い、それ以外は直接検証する。
 - 反証結果に基づき仮説を採択/修正/棄却
 
 **Step 4: 証拠スコアリングとハルシネーション防止チェック**
+
 - 証拠強度スコアリングで仮説をランキング
 - 出力に含まれるファイルパス・関数名・API仕様を `Read` / `WebSearch` で実在確認
 - [bias-checklist.md](references/bias-checklist.md) のセルフチェックを実行
@@ -101,6 +105,7 @@ Issue Analyzer Progress:
 **核心**: AIはコードを書かない。場所と方針のみガイドし、ユーザーが実行する
 
 **学習メソッド**（状況に応じて選択・組合せ）:
+
 1. Print Debugging — 観察ポイント指定 → ユーザーが追加・実行・分析
 2. 最小再現ケース — 段階的な再現構築をガイド
 3. 失敗するユニットテスト — テスト方針提示 → ユーザーが書いて失敗を確認
@@ -116,7 +121,8 @@ Issue Analyzer Progress:
 **目的**: 複数の修正アプローチを比較し、最適な戦略を合意する
 
 **サブエージェント戦略**:
-1. `Task(Plan)` で各アプローチの実現可能性を分析
+
+1. 独立した比較成果物が必要で、調整コストを上回る場合だけ `Task(Plan)` を必要な数だけ起動して各アプローチの実現可能性を分析する。小規模な比較は直接行う。
 2. `WebSearch` で類似問題の過去対応・公式推奨パターンを調査
 
 **出力**: アプローチ列挙 + トレードオフ比較表 + 推奨と根拠
@@ -129,13 +135,13 @@ Issue Analyzer Progress:
 
 **目的**: t-wada TDD理論に基づき、Red-Green-Refactorサイクルで実装計画を作成
 
-**出力先**: `.claude/plans/issue-analyzer-{YYYY-MM-DD}-{short-description}.md`
+**成果物の保持**: TDD実装計画は会話内のsession stateとして保持する。ファイル保存はユーザーが明示的に求めた場合のみ、保存先を確認して行う。
 
 **TDDサイクル**: 修正全体を小さなサイクルに分解。各サイクル = 1つのテスト + 1つの修正
 
 **詳細手順**: [phase4-tdd-plan.md](references/phase4-tdd-plan.md) を参照
 
-**確認ゲート**: 計画レビュー → ユーザー承認 → `.claude/plans/` に保存して完了
+**確認ゲート**: 計画レビュー → ユーザー承認。保存を求められた場合のみ、保存先を確認してファイルへ書き出して完了
 
 ## GitHub コミュニケーションサポート
 
@@ -144,12 +150,12 @@ Issue Analyzer Progress:
 - **Issue/Discussion コメントドラフト**: ユーザーの代わりにドラフトを作成
 - **質問の構造化**: 効果的な質問の構成を提案
 - **投稿はユーザー判断**: `gh issue comment` や `gh pr comment` の実行はユーザーが決定
-- **Discussion の読み取り**: `Task(ctx:github)` で関連 Discussion を取得し分析に活用
+- **Discussion の読み取り**: `gh api graphql` で関連 Discussion を取得し分析に活用
 
 ## エラーハンドリング
 
 | 状況 | 対応 |
-|------|------|
+| ------ | ------ |
 | 無効なGitHub URL | 再入力を求める、またはテキスト入力にフォールバック |
 | プライベートリポジトリ | `gh auth login` のガイドを提示 |
 | テスト基盤なし | Phase 2 は再現ケースに集中、Phase 4 でテスト基盤セットアップを計画に含める |

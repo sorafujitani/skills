@@ -2,7 +2,7 @@
 name: review-code
 description: |
   PRベースの多角的コードレビューを実行する。
-  4つの独立subagentが並列にレビューし、指摘箇所のコード実在確認・
+  小規模な差分は直接レビューし、独立した成果物や競合仮説があり調整コストを上回る場合だけ必要な数のsubagentを並列起動する。指摘箇所のコード実在確認・
   WebSearchによる公式ドキュメント裏取りでハルシネーションを防止する。
   各指摘に前提知識・公式リファレンスURLを付与し教育的なレビューを提供する。
   言語・フレームワークを自動検出し、プロジェクト設定+公式ガイドラインに基づくレビューを実施。
@@ -28,7 +28,7 @@ argument-hint: "[PR-url, branch-name, or empty for current branch]"
 
 `$ARGUMENTS` の内容に応じて:
 
-1. **GitHub PR URL**: `Task(ctx:github)` でPR情報を取得（diff, comments, files, body）
+1. **GitHub PR URL**: `gh pr view --json` でPR情報を取得（diff, comments, files, body）
 2. **ブランチ名**: `git diff main...{branch}` で差分取得
 3. **引数なし**: 現在のブランチの `git diff main...HEAD` を使用
 
@@ -37,31 +37,34 @@ argument-hint: "[PR-url, branch-name, or empty for current branch]"
 **目的**: レビュー対象の差分取得 + プロジェクトの言語・フレームワーク・lint設定を把握
 
 **Step 1: 差分取得**
-- PR URL → `Task(ctx:github)` で構造化情報取得
+
+- PR URL → `gh pr view --json` で構造化情報取得
 - ブランチ → `git diff` で差分取得
 - 変更ファイル一覧と変更行数を把握
+- **未追跡ファイルを含める**: `git diff` は未追跡（新規）ファイルを出力しない。`git status --short` の `??` と `git ls-files --others --exclude-standard` で新規ファイルを列挙し、内容を直接 Read してレビュー対象に加える
 
 **Step 2: 言語・フレームワーク自動検出**
+
 - [lang-detection.md](references/lang-detection.md) に従い、設定ファイルを `Glob` → `Read` で検出
 - 検出結果: 言語、フレームワーク、linter設定
 
 **Step 3: 公式レビューガイドラインの取得**
+
 - [lang-detection.md](references/lang-detection.md) の「動的参照戦略」に記載された `site:` 付き検索クエリを使用する
-- 必ず公式サイトに限定した検索を行う（例: `site:typescriptlang.org`, `site:go.dev`）
-- 検索クエリには現在の年（`$CURRENT_YEAR`）を含めて最新ドキュメントを優先する
+- `site:` 付きで公式ドキュメントに限定して検索する（例: `site:typescriptlang.org`, `site:go.dev`）。見つからなければ「公式未確認」と明記する
+- 検索クエリに現在の年を含めて最新ドキュメントを優先する
 - `WebFetch` で公式ドキュメントページの詳細を取得し、Phase 2 の Agent D に渡す
-- ブログ記事やサードパーティの解説ではなく、言語・フレームワーク公式ドキュメントのみを信頼する
 
 **Phase 1 出力**: 差分サマリー、検出言語/FW、lint設定、取得した公式ガイドライン
 
 ## Phase 2: Multi-perspective Review（多角的レビュー）
 
-**目的**: 4つの独立subagentが異なる観点から並列にレビューする
+**目的**: 必要な観点を独立してレビューし、指摘を比較できるようにする
 
-`Task(Explore)` を最大4並列で起動。各agentは他のagentの結果を知らない。
-> 直接レビューで済ませず、**必ず同一ターンで4つのsubagentを並列起動**する（Opus 4.8 はサブエージェント生成を控える傾向があるため明示する）。
+小規模な差分は親が直接レビューする。独立した成果物や競合仮説があり、調整コストを上回る場合のみ、必要な観点数の `Task(Explore)` を並列起動する（固定数を必須にしない）。起動する場合も、以下の候補から必要な観点だけ選び、各agentは他のagentの結果を知らない。
 
 各agentに渡す情報:
+
 - 差分（git diff 出力）
 - 変更ファイルの全体コンテキスト（`Read` で変更関数の前後を含む）
 - Phase 1 で検出した言語・FW情報
@@ -78,20 +81,24 @@ argument-hint: "[PR-url, branch-name, or empty for current branch]"
 **目的**: 指摘の品質保証と教育的レポートの生成
 
 **Step 1: 統合と重複排除**
-- 4 agentの指摘を統合
+
+- 起動したagentの指摘を統合
 - 同一箇所への重複指摘をマージ（重大度は高い方を採用）
 
 **Step 2: ハルシネーション防止チェック**
+
 - 全指摘の `file:line` を `Read` で再確認
 - API仕様や言語仕様への言及を `WebSearch` で裏取り（`site:` 付きで公式ドキュメントに限定）
 
 **Step 3: 教育的リファレンスの付与**
 各指摘に対して:
+
 1. **前提知識**: この指摘を理解するために必要な概念を簡潔に説明
 2. **公式リファレンス**: `WebSearch` で該当する公式ドキュメントのURLを取得し付与
 3. **学習ポイント**: この指摘から学べること、同様の問題を今後防ぐ方法
 
 **Step 4: 重大度スコアリング**
+
 - [severity-scoring.md](references/severity-scoring.md) に従い分類
 - マージ判定（LGTM / 要修正 / 要検討）
 
@@ -135,8 +142,8 @@ argument-hint: "[PR-url, branch-name, or empty for current branch]"
 ## エラーハンドリング
 
 | 状況 | 対応 |
-|------|------|
+| ------ | ------ |
 | PR URLが無効 | 再入力を求める、またはブランチ名にフォールバック |
 | 差分が巨大（1000行超） | 変更ファイルを重要度で優先順位付けし、上位を集中レビュー |
-| 言語検出失敗 | Agent D をスキップし、Agent A-C の3並列で実行 |
+| 言語検出失敗 | Agent D をスキップし、必要な観点のagentだけで実行 |
 | WebSearch で公式ドキュメントが見つからない | リファレンスなしで指摘を出力（「公式ドキュメント未確認」と明記） |

@@ -1,6 +1,6 @@
 ---
 name: karin-info
-description: "シンガーソングライターKarin.の最新情報を取得・整理するスキル。Web SearchとWebFetchを使い、ニュース、リリース情報、ライブ・イベント情報、MV公開情報などを収集して構造化された形式で提示する。以下の場合に使用: (1) Karin.の最新ニュースを知りたいとき (2) Karin.の新曲・アルバムリリース情報を確認したいとき (3) Karin.のライブ・イベント情報を確認したいとき (4) Karin.のアーティスト情報を知りたいとき"
+description: "シンガーソングライター Karin.（ピリオド付き）のニュース・リリース・ライブ・プロフィールを Web Search と WebFetch で収集して整理する。Karin. に関する情報を求められたときに使う。"
 ---
 
 # Karin. 最新情報エージェント
@@ -91,6 +91,3 @@ https://www.karin-official.com/pages-sitemap.xml
 - Universal Music: https://www.universal-music.co.jp/karin/
 ```
 
-## リファレンス
-
-- 情報源の詳細と基本プロフィール: [references/sources.md](references/sources.md)

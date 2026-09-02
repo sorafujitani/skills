@@ -1,6 +1,6 @@
 ---
 name: ts-lint-searcher
-description: ESLint (typescript-eslint 含む) / oxlint / Biome lint の 3 つの TypeScript linter のルールを横断検索する。挙動ベース「await し忘れを検出したい」やルール名ベース「`no-floating-promises` の Biome 版は？」の問いに対し、3-way 比較表 + 公式ドキュメント URL を返す。トリガー — (1) 検出したい挙動からルールを特定、(2) ルール名から他 linter 同等品を照合、(3) カテゴリ単位で 3 linter を並列確認、(4) `/ts-lint-searcher` の明示呼び出し。SKIP — lint 設定ファイル (eslint.config / biome.json) の生成、lint 実行、コードレビュー、TypeScript 言語仕様の一般質問。
+description: ESLint (typescript-eslint 含む) / oxlint / Biome lint の 3 つの TypeScript linter のルールを横断検索する。挙動ベース「await し忘れを検出したい」やルール名ベース「`no-floating-promises` の Biome 版は？」の問いに対し、3-way 比較表 + 公式ドキュメント URL を返す。トリガー — (1) 検出したい挙動からルールを特定、(2) ルール名から他 linter 同等品を照合、(3) カテゴリ単位で 3 linter を並列確認、SKIP — lint 設定ファイル (eslint.config / biome.json) の生成、lint 実行、コードレビュー、TypeScript 言語仕様の一般質問。
 ---
 
 # ts-lint-searcher
@@ -19,7 +19,7 @@ ESLint + typescript-eslint / oxlint / Biome lint の 3 つを横断して TypeSc
 
 ## ワークフロー
 
-1. **入力を読む**。読み替え（typo修正など）をする時は出力冒頭で必ず明示する。多義語が極端（「型安全」「safe」など 5 つ以上のルールに展開しうる）なら AskUserQuestion で意図を絞る。曖昧入力ごとの典型解釈は [references/query-disambiguation.md](references/query-disambiguation.md)。
+1. **入力を読む**。読み替え（typo修正など）をする時は出力冒頭で必ず明示する。多義語が極端（「型安全」「safe」など 5 つ以上のルールに展開しうる）ならユーザーに確認質問して意図を絞る。曖昧入力ごとの典型解釈は [references/query-disambiguation.md](references/query-disambiguation.md)。
 
 2. **マッピング表を引く**: [references/rule-mappings.md](references/rule-mappings.md)。well-known なルールはここで即解決する。
 
