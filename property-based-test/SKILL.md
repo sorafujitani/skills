@@ -154,7 +154,7 @@ detection_rules:
 
 ```
 IF pbt_lib == null:
-  1. ユーザーに AskUserQuestion で確認:
+  1. ユーザーに確認:
      "PBTライブラリ {fallback_pbt} が未導入です。インストールしますか？"
      options: ["はい（推奨）", "いいえ（中断）"]
   2. IF "はい": install_cmd を実行
