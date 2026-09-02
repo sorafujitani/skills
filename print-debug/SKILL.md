@@ -177,8 +177,6 @@ User: ...
 
 詳細: [prerequisite-knowledge.md](references/prerequisite-knowledge.md) を参照
 
-```
-
 ## エラーハンドリング
 
 | 状況 | 対応 |
