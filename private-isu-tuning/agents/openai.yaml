@@ -1,0 +1,4 @@
+interface:
+  display_name: "private-isu 段階別チューニング"
+  short_description: "専用サーバーで書籍の改善を指定ステップまで実装・計測して停止する"
+  default_prompt: "$private-isu-tuning を使い、この専用サーバー上の private-isu を指定ステップまで改善してください。"
