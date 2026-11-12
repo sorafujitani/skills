@@ -1,3 +1,3 @@
 interface:
-  display_name: "T3 Code 司令塔"
+  display_name: "T3 Code Controller"
   short_description: "T3 Codeで依頼をプロジェクトへ振り分け、担当の進行と結果を管理する"
