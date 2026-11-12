@@ -100,16 +100,16 @@ Read-only modes for thinking through a change before any code moves.
 
 ### Agent harness
 
-- **[t3-ctl](t3-ctl/SKILL.md)** — Use a T3 Code thread as a Controller: route requests to the appropriate projects and threads, track progress, review results, and report back. Each assigned thread owns the work, any agent delegation, integration, and verification. Works within an existing project or across projects; no dedicated Controller project is required.
+- **[t3ctl](t3ctl/SKILL.md)** — Use a T3 Code thread as a Controller: route requests to the appropriate projects and threads, track progress, review results, and report back. Each assigned thread owns the work, any agent delegation, integration, and verification. Works within an existing project or across projects; no dedicated Controller project is required.
 
   ```bash
-  npx skills add sorafujitani/skills/t3-ctl
+  npx skills add sorafujitani/skills/t3ctl
   ```
 
   In the thread you want to use as the Controller:
 
   ```text
-  Use $t3-ctl to manage work for this project. Create task threads as needed,
+  Use $t3ctl to manage work for this project. Create task threads as needed,
   track their progress, check their results, and report back here.
   ```
 

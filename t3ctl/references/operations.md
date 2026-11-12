@@ -122,7 +122,7 @@ Settleは会話を残してアクティブ一覧から外す操作。プロジ�
 
 ## 状態の保存と交代
 
-既定の保存先は `~/.local/state/t3-ctl/<project-id>/<control-id>/`。IDの各値はURL percent-encodingなどで安全な1パス要素にする。control-idは最初のControllerのIDで固定し、別マシンへ移る場合は保存先を明示的に引き継ぐ。状態をリポジトリへcommitしない。
+互換性のため、保存先と操作IDの `t3-ctl` 接頭辞は改名前のまま維持する。既定の保存先は `~/.local/state/t3-ctl/<project-id>/<control-id>/`。IDの各値はURL percent-encodingなどで安全な1パス要素にする。control-idは最初のControllerのIDで固定し、別マシンへ移る場合は保存先を明示的に引き継ぐ。状態をリポジトリへcommitしない。
 
 - `ACTIVE.md`: 現在のControllerリンク・対象範囲・軽作業用の担当登録・待ち行列・依頼ごとの目的、完了条件、担当リンク、状態、次の操作、操作ファイルへの参照。担当登録は進行中の依頼がなくても残す。
 - `operations/<clientRequestId>.json`: 送信前の引数とhash、送信後の受領記録。完了後も最小限の記録を残し、再送・再開時の照合に使う。全件を会話へ読み込まない。
